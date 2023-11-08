@@ -12,7 +12,7 @@ env:
   ECR_HISTORY_REPOSITORY: peerprep-history-backend
 
  
-  ECS_HISTORY_SERVICE: Peerprep-History-BE
+  ECS_HISTORY_SERVICE: Peerprep-History-Backend
 
 
   ECS_CLUSTER: PeerPrepDev # set this to your Amazon ECS cluster name
