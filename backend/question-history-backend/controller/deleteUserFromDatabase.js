@@ -1,5 +1,5 @@
 // Import the Question model from its file path
-const Question = require("../model/QuestionHistory");
+const Question = require("../model/QuestionHistory.js");
 
 // Define the getQuestions function
 const deleteUserFromDatabase  = async (req, res) => {

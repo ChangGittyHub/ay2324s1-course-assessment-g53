@@ -1,0 +1,79 @@
+
+name: Deploy History BE to Amazon ECS
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  AWS_REGION: ap-southeast-1                  # set this to your preferred AWS region, e.g. us-west-1
+
+
+  ECR_HISTORY_REPOSITORY: peerprep-history-backend
+
+ 
+  ECS_HISTORY_SERVICE: Peerprep-History-BE
+
+
+  ECS_CLUSTER: PeerPrepDev # set this to your Amazon ECS cluster name
+  
+  
+  ECS_HISTORY_TASK_DEFINITION: ./backend/question-history-backend/task-definition.json
+
+
+  HISTORY_CONTAINER_NAME: Peerprep-History-Backend
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy History BE
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+
+    - name: History service - Build, tag, and push image to Amazon ECR
+      id: build-history-service-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+
+        docker build -t $ECR_REGISTRY/$ECR_HISTORY_REPOSITORY:$IMAGE_TAG -f ./backend/question-history-backend/Dockerfile.prod ./backend/question-history-backend
+        docker push $ECR_REGISTRY/$ECR_HISTORY_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_HISTORY_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: history-service-task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: ${{ env.ECS_HISTORY_TASK_DEFINITION }}
+        container-name: ${{ env.HISTORY_CONTAINER_NAME }}
+        image: ${{ steps.build-history-service-image.outputs.image }}
+
+    - name: Matching service - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.history-service-task-def.outputs.task-definition }}
+        service: ${{ env.ECS_HISTORY_SERVICE }}
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true

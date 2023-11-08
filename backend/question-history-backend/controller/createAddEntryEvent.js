@@ -1,5 +1,5 @@
 // Import the Question model from its file path
-const Question = require("../model/QuestionHistory");
+const Question = require("../model/QuestionHistory.js");
 const jwt = require("jsonwebtoken");
 
 const SECRET_KEY = "yourSecretKey"
