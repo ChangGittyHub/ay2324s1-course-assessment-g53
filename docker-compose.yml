@@ -8,7 +8,19 @@ services:
       - USER_HOST=http://user_profile_backend:4000/api/users
     ports: 
       - 4000:4000
-  
+
+  history-backend:
+    build:
+      context: ./backend/question-history-backend
+    environment:
+      - HISTORY_HOST="http://history-backend:5000/api/history"
+      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
+    ports:
+      - 5000:5000
+    depends_on:
+      - rabbitmq
+    restart: always
+
   question-backend:
     build:
       context: ./backend/question-backend
@@ -47,7 +59,7 @@ services:
       - REACT_APP_MATCHING_HOST=ws://localhost:3001
       - REACT_APP_CATEGORY_HOST=http://localhost:8000/api/categories
       - REACT_APP_COLLAB_HOST=http://localhost:9000
-
+      - REACT_APP_HISTORY_HOST="http://localhost:5000/api/history"
     depends_on:
       - user_profile_backend
       - question-backend
@@ -73,12 +85,14 @@ services:
     ports:
       - 9000:9000
     environment:
+      - RABBIT_MQ_HOST=amqp://rabbitmq:5672
       - FRONTEND_HOST=http://localhost:3000
       - MONGODB_URI=mongodb://mongodb_container/document_db
       - QUESTION_HOST=http://question-backend:8000/api/questions
 
     depends_on:
       - mongodb_container
+      - rabbitmq
 
   mongodb_container:
     image: mongo:latest

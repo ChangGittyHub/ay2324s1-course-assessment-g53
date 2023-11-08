@@ -13,6 +13,7 @@ import useCookie from "./components/useCookie"
 import UserProfile from "./pages/UserProfile"
 import Room from "./pages/Room"
 import Match from "./pages/Match"
+import QuestionHistoryPage from "./pages/QuestionHistoryPage"
 
 
 
@@ -41,10 +42,11 @@ const App = () => {
         <Route index element={<Login />} />
         <Route path="signup" element={<SignupPage />} />
         <Route path="logout" element={<Logout />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout is_admin={is_admin} />}>
           {isLogin ? <Route path="match" element = {<Match/>}/> : null}
           {isLogin ? <Route path="questionpage" element={<QuestionPage />} /> : null}
           {isLogin ? <Route path="profile" element={<UserProfile />} /> : null}
+          {isLogin ? <Route path="questionhistory" element={<QuestionHistoryPage />} /> : null}
           {isLogin ? <Route path="room/:id" element={<Room />} /> : null}
           {is_admin ? <Route path="adminview" element={<AdminView />} /> : null}
         </Route>

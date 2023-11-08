@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
-import axios from 'axios'
 import { Button } from '@mui/material'
 import LanguageSelection from './LanguageSelection'
 
-function LogEditorButton () {
-  const { id: roomId } = useParams()
+function CodeExecutionComponent ({userCode}) {
   const [output, setOutput] = useState(null)
   const [runtimeVersions, setRuntimeVersions] = useState({
     c: '',
@@ -58,7 +56,7 @@ function LogEditorButton () {
 
   // Event handler for the submit button
   const handleSubmit = async () => {
-    const code = await get_document()
+    const code = userCode
     console.log(code)
     const cleanedCode = code.replace(/[\u00A0]/g, '  ')
 
@@ -92,27 +90,6 @@ function LogEditorButton () {
     // Handle the response (you may want to do error checking here)
     const responseData = await response.json()
     setOutput(responseData)
-  }
-
-  const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
-
-  async function get_document () {
-    console.log("Submitting code...")
-    return axios.post(COLLAB_HOST + "/api/collab/get_document_raw", {
-      documentID: roomId,
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-      .then((response) => {
-        const { document } = response.data
-        return document
-      })
-      .catch(error => {
-        console.error('Error:', error)
-        throw error
-      })
   }
 
   return (
@@ -149,4 +126,4 @@ function LogEditorButton () {
   )
 }
 
-export default LogEditorButton
+export default CodeExecutionComponent

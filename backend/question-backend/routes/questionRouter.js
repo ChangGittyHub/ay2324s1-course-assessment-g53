@@ -10,16 +10,12 @@ import { deleteQuestion } from "../controller/deleteQuestion.js";
 import { getQuestionsByComplexity } from "../controller/getQuestionsByComplexity.js"
 
  const router = express.Router();
- 
-router.get("/", getQuestions);
-router.get("/", getQuestions);
 
  router.get("/", getQuestions);
-
+ router.get("/:complexity", getQuestionsByComplexity);
  router.post("/", [checkLogin, checkAdmin], addQuestion);
  router.put("/", [checkLogin, checkAdmin], updateQuestion);
  router.delete("/:id", [checkLogin, checkAdmin], deleteQuestion);
 
- router.get("/:complexity", getQuestionsByComplexity);
 
  export default router;

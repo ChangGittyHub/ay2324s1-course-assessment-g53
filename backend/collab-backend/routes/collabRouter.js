@@ -11,7 +11,6 @@ dotenv.config({
 const MONGODB_URI = process.env.MONGODB_URI ? process.env.MONGODB_URI : "mongodb://localhost/document_db"
 mongoose.connect(MONGODB_URI)
 
-
 router.post("/get_document", async (req, res) => {
     const {documentID} = req.body
     var document = await Document.findById(documentID)

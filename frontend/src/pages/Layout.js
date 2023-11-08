@@ -66,7 +66,7 @@ const defaultTheme = createTheme({
   },
 });
 
-function Layout() {
+function Layout({is_admin}) {
     const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -119,7 +119,7 @@ function Layout() {
               </IconButton>
             </Toolbar>
             <Divider />
-            <NavBarList/>
+            <NavBarList is_admin = {is_admin}/>
           </Drawer>
           <Box
             component="main"

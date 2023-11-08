@@ -8,7 +8,7 @@ import "./TextEditor.css"
 
 const SAVE_INTERVAL_MS = 2000
 const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000"
-function TextEditor() {
+function TextEditor({setUserCode}) {
   const {id: documentId} = useParams()
   const [socket, setSocket] = useState()
   const [quill, setQuill] = useState()
@@ -29,7 +29,7 @@ function TextEditor() {
     
     socket.once("load-document", document => {
       quill.setContents(document)
-      applyFormatting()
+      runEventsWhenTextIsChanged()
       quill.enable()
     })
 
@@ -42,7 +42,7 @@ function TextEditor() {
 
     const handler = (delta, oldDelta, source) => {
       if (source !== 'user') return
-      applyFormatting()
+      runEventsWhenTextIsChanged()
       socket.emit("send-changes", delta)
     }
 
@@ -60,7 +60,7 @@ function TextEditor() {
 
     const handler = (delta) => {
       quill.updateContents(delta)
-      applyFormatting()
+      runEventsWhenTextIsChanged()
     }
 
     socket.on('recieve-changes', handler)
@@ -83,9 +83,10 @@ function TextEditor() {
     }
   }, [socket, quill])
 
-  function applyFormatting() {
+  function runEventsWhenTextIsChanged() {
     quill.format('code-block', true)
     setQuill(quill)
+    setUserCode(quill.getText())
   }
 
   // Create Quill instance

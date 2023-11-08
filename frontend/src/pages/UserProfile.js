@@ -32,6 +32,7 @@ const modal_style = {
 };
 
 const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
+const HISTORY_HOST = process.env.REACT_APP_HISTORY_HOST ? process.env.REACT_APP_HISTORY_HOST : "http://localhost:5000/api/history"
 export default function UserProfile () {
   const [user, setUser] = useState({})
   const [loading, setLoading] = useState(true)
@@ -248,6 +249,16 @@ export default function UserProfile () {
         console.log(response.data)
         window.location.href = '/'
       })
+      .catch((error) => {
+        console.error('Error:', error)
+        alert('Error deleting user.')
+      })
+
+    axios.delete(`${HISTORY_HOST}/deleteUser/${user_id}`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
       .catch((error) => {
         console.error('Error:', error)
         alert('Error deleting user.')
