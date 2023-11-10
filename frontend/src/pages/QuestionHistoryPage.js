@@ -17,7 +17,7 @@ import useCookie from "../components/useCookie";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const HISTORY_HOST =
-  process.env.REACT_APP_HISTORY_HOST || "http://localhost:5000/api/history";
+  process.env.REACT_APP_HISTORY_HOST || "http://localhost:5001/api/history";
 
 function QuestionHistoryPage() {
   const [history, setHistory] = useState([]);

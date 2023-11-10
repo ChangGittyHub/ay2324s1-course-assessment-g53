@@ -32,7 +32,7 @@ const modal_style = {
 };
 
 const USER_HOST = process.env.REACT_APP_USER_HOST ? process.env.REACT_APP_USER_HOST : "http://localhost:4000/api/users"
-const HISTORY_HOST = process.env.REACT_APP_HISTORY_HOST ? process.env.REACT_APP_HISTORY_HOST : "http://localhost:5000/api/history"
+const HISTORY_HOST = process.env.REACT_APP_HISTORY_HOST ? process.env.REACT_APP_HISTORY_HOST : "http://localhost:5001/api/history"
 export default function UserProfile () {
   const [user, setUser] = useState({})
   const [loading, setLoading] = useState(true)

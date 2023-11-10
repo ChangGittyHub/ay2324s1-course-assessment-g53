@@ -4,7 +4,7 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
 const REACT_APP_COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST ? process.env.REACT_APP_COLLAB_HOST : "http://localhost:9000/api/collab"
-const REACT_APP_HISTORY_HOST = process.env.REACT_APP_HISTORY_HOST ? process.env.REACT_APP_HISTORY_HOST : "http://localhost:5000/api/history"
+const REACT_APP_HISTORY_HOST = process.env.REACT_APP_HISTORY_HOST ? process.env.REACT_APP_HISTORY_HOST : "http://localhost:5001/api/history"
 
 const SaveSolutionButton = ({userCode, question}) => {
     const { getAuthCookie } = useCookie()
