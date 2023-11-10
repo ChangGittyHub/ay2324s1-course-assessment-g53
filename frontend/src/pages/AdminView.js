@@ -43,7 +43,7 @@ export default function AdminView () {
         // Make a PUT request to set the user as admin
         const token = getAuthCookie()
         
-        axios.put(`${USER_HOST}/setUserAdmin?username=${username}`, {
+        axios.put(`${USER_HOST}/setUserAdmin?username=${username}`, {}, {
             headers: {
                 'Authorization': token
             }
