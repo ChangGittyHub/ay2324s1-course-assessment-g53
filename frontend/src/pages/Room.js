@@ -105,12 +105,8 @@ const Room = () => {
           </Button>
 
         </Paper>
-
-        <Paper style={{ margin:"10px", height: "30%"}}>
-          <VideoCall/>
-        </Paper>
-          
       </Grid>
+
 
       {/* Divider */}
       <div
@@ -136,6 +132,9 @@ const Room = () => {
 
       {/* Playground and Submit Section */}
       <Grid item style={{ flex: `0 0 ${100 - dividerPosition}%` , maxWidth: `${100 - dividerPosition}%`}}>
+        <Paper style={{ margin:"10px", height: "30%"}}>
+          <VideoCall/>
+        </Paper>
         <Paper elevation={3} style={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
 
           {/* Playground */}

@@ -38,7 +38,12 @@ io.on("connection", (socket) => {
     const userId = obj.id
     socket.join(roomId)
     socket.broadcast.to(roomId).emit("user-joined", userId)
+    socket.on("disconnect", () => {
+      socket.broadcast.to(roomId).emit("user-left", userId)
+      socket.leave(roomId)
+    })
 
   })
+
 
 });
