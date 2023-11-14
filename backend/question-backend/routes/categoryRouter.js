@@ -10,7 +10,7 @@ import { updateCategory } from "../controller/updateCategory.js";
 
 const router = express.Router();
 
-router.get("/", [checkLogin], getCategories);
+router.get("/", getCategories);
 router.post("/", [checkLogin, checkAdmin], addCategory);
 router.put("/:oldName", [checkLogin, checkAdmin], updateCategory);
 router.delete("/:name", [checkLogin, checkAdmin], deleteCategory);
