@@ -15,7 +15,7 @@ function CodeExecutionComponent ({userCode}) {
     javascript: '',
     python3: '',
   })
-  const [curLang, setCurLang] = useState('python')
+  const [curLang, setCurLang] = useState('python3')
 
   useEffect(() => {
     // Fetch runtime versions from the API

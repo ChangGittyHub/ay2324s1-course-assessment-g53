@@ -58,19 +58,6 @@ io.on("connection", socket => {
       findOrCreateDocument(documentID);
     });
   });
-  //socket for the video calling
-  socket.on("join-room", (roomId, userId) => {
-    socket.join(roomId);
-    // console.log("user has joined the room")
-    socket.on("video-ready", () => {
-      // console.log("server sees that user's video is ready")
-      socket.to(roomId).emit("user-connected", userId);
-    });
-
-    socket.on("disconnect", () => {
-      socket.to(roomId).emit("user-disconnected", userId);
-    });
-  });
 
   // Join the question room
   socket.on("join-question-room", (roomId) => {

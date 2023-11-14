@@ -13,10 +13,10 @@ services:
     build:
       context: ./backend/question-history-backend
     environment:
-      - HISTORY_HOST="http://history-backend:5000/api/history"
+      - HISTORY_HOST="http://history-backend:5001/api/history"
       - RABBIT_MQ_HOST=amqp://rabbitmq:5672
     ports:
-      - 5000:5000
+      - 5001:5001
     depends_on:
       - rabbitmq
     restart: always
@@ -59,7 +59,7 @@ services:
       - REACT_APP_MATCHING_HOST=ws://localhost:3001
       - REACT_APP_CATEGORY_HOST=http://localhost:8000/api/categories
       - REACT_APP_COLLAB_HOST=http://localhost:9000
-      - REACT_APP_HISTORY_HOST="http://localhost:5000/api/history"
+      - REACT_APP_HISTORY_HOST="http://localhost:5001/api/history"
     depends_on:
       - user_profile_backend
       - question-backend

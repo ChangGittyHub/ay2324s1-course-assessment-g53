@@ -16,6 +16,7 @@ const Room = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [question, setQuestion] = useState(null);
   const [userCode, setUserCode] = useState(null);
+  const [socket, setSocket] = useState(null)
   const { id : roomId } = useParams();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -23,8 +24,10 @@ const Room = () => {
   const COLLAB_HOST = process.env.REACT_APP_COLLAB_HOST
     ? process.env.REACT_APP_COLLAB_HOST
     : "http://localhost:9000";
-  const socket = io(COLLAB_HOST);
+  useEffect(() => {setSocket(io(COLLAB_HOST));}, [])
+    
   const handleClick = () => {
+    if (!socket) return;
     socket.emit("request-new-questions", {
       roomId: roomId,
       complexity: difficulty,
@@ -60,6 +63,7 @@ const Room = () => {
   };
 
   useEffect(() => {
+    if(!socket) return;
     const handleMouseUp = () => setIsDragging(false)
 
     if (isDragging) {
@@ -75,7 +79,7 @@ const Room = () => {
       document.removeEventListener("mousemove", handleDividerDrag);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, handleDividerDrag, roomId, difficulty, question]);
+  }, [isDragging, handleDividerDrag, roomId, difficulty, question, socket]);
 
   return (
     <Grid container spacing={3} style={{ position: 'relative', overflow: 'hidden' }}>
@@ -101,12 +105,8 @@ const Room = () => {
           </Button>
 
         </Paper>
-
-        <Paper style={{ margin:"10px", height: "30%"}}>
-          <VideoCall/>
-        </Paper>
-          
       </Grid>
+
 
       {/* Divider */}
       <div
@@ -132,6 +132,9 @@ const Room = () => {
 
       {/* Playground and Submit Section */}
       <Grid item style={{ flex: `0 0 ${100 - dividerPosition}%` , maxWidth: `${100 - dividerPosition}%`}}>
+        <Paper style={{ margin:"10px", height: "30%"}}>
+          <VideoCall/>
+        </Paper>
         <Paper elevation={3} style={{ height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
 
           {/* Playground */}
