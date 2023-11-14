@@ -138,7 +138,7 @@ const VideoCall = () => {
 
   return (
   <div>
-    <Button onClick={handleToggleVideo}>Toggle Call</Button>
+    <Button onClick={handleToggleVideo}>{showVideo ? "End Call" : "Start Call" }</Button>
     {showVideo && <div id="videos" ref={videoContainerRef} style={{margin: '10px'}}></div>}
   </div>
   
